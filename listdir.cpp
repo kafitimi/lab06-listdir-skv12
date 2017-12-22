@@ -1,57 +1,41 @@
 #include "windows.h"
 #include <stdio.h>
+#include <locale.h>
+#include <conio.h>
 
 #pragma warning( disable : 4996)
 
 static int count;
 
+int zad0() {
+	wchar_t s[512];
+	GetCurrentDirectory(512, s);
+	wprintf(L"Starting in: %s\n", s);
+	return 0;
+}
 
+int zad1() {
+	count = 0;
+	int m = 16;
+	HANDLE hSearch;
+	WIN32_FIND_DATA fileinfo;
+	hSearch = FindFirstFile(L"*", &fileinfo);
+	do {
+		count++;
+		if (count > 2) {
+			wprintf(TEXT("file #%d is <%s>\n"), count-2, fileinfo.cFileName);
+		}
+	} while (FindNextFile(hSearch, &fileinfo) != 0);
+	FindClose(hSearch);
+	return 0;
+}
 
 int main() {
-    	wchar_t s[512];              	// текущая папка
-    	GetCurrentDirectory(512, s);	// получить текущую папку
-    	wprintf(L"Starting in: %s\n", s);
-
-    	count = 0;                  	// обнулить счетчик файлов    	
-
-		HANDLE hFind;
-		WIN32_FIND_DATA fileinfo;
-		
-		hFind = FindFirstFile(L"*", &fileinfo);
-		wprintf(L"%s\n", fileinfo.cFileName);
-		//kek
-		do {
-			count++; // некоторые файлы не считаются??
-			wprintf(TEXT("file #%d is <%s>\n"), count, fileinfo.cFileName);
-
-			// ...
-			// здесь будет обход в глубину
-		} while (FindNextFile(hFind, &fileinfo) != 0);
-		FindClose(hFind);
-
-
-
-        //dfs();                     	// запустить обход в глубину
-   	 
-    	wprintf(L"File count = %d\n", count);
-    	return 0;
+	setlocale(LC_ALL, "RU");
+	printf("Задание 0\n");
+	zad0();
+	printf("Задание 1\n");
+	zad1();
+    return 0;
 }
 
-
-/*void dfs() {
-	HANDLE hFind;                   	// номер поиска
-	WIN32_FIND_DATA res;            	// результат поиска
-
-	CHAR dir[] = ".\\*";
-	hFind = FindFirstFile(dir, &res);   // найти первый файл
-
-	do {
-    	count++; // некоторые файлы не считаются??
-    	_tprintf(TEXT("file #%d is <%s>\n"), count, res.cFileName);
-
-    	// ...
-    	// здесь будет обход в глубину
-	} while (FindNextFile(hFind, &res) != 0);
-	FindClose(hFind);
-}
-*/
