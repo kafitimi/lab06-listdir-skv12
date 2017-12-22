@@ -19,7 +19,7 @@ int main() {
 		
 		hFind = FindFirstFile(L"*", &fileinfo);
 		wprintf(L"%s\n", fileinfo.cFileName);
-
+		//kek
 		do {
 			count++; // некоторые файлы не считаются??
 			wprintf(TEXT("file #%d is <%s>\n"), count, fileinfo.cFileName);
